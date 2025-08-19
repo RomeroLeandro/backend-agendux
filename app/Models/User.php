@@ -15,6 +15,11 @@ class User extends Authenticatable
 {
     return $this->belongsTo(Plan::class);
 }
+
+public function services()
+{
+    return $this->hasMany(Service::class);
+}
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 

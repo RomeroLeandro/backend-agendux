@@ -3,11 +3,13 @@
 use App\Http\Controllers\PlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserPlanController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ProfileController;
-
+use App\Http\Controllers\Api\{
+    AuthController,
+    UserController,
+    ProfileController,
+    UserPlanController,
+};
+use App\Http\Controllers\ServiceController;
 
 
 Route::apiResource('plans', PlanController::class)->only(['index', 'show']);
@@ -39,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::put('/user/plan', [UserPlanController::class, 'update']);
+    Route::apiResource('services', ServiceController::class);
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +51,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         // Rutas de administración de planes (crear, editar, borrar)
         Route::apiResource('plans', PlanController::class)->except(['index', 'show']);
-        
         // Rutas de administración de usuarios (CRUD completo)
         Route::apiResource('users', UserController::class);
     });

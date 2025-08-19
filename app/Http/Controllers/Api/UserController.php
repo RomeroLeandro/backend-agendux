@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -21,8 +22,7 @@ class UserController extends Controller
     {
         // Verifica si el usuario autenticado puede ejecutar la acción 'viewAny' del UserPolicy.
         $this->authorize('viewAny', User::class);
-        
-        return User::all();
+        return UserResource::collection(User::all());
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
-        return $user;
+        return new UserResource($user);
     }
 
     /**
