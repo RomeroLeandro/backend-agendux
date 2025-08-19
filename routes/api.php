@@ -10,31 +10,46 @@ use App\Http\Controllers\Api\ProfileController;
 
 
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::apiResource('plans', PlanController::class)->only(['index', 'show']);
 
-Route::apiResource('plans', PlanController::class)->only([
-    'index', 'show'
-]);
+// Rutas públicas de autenticación
+Route::prefix('auth')->group(function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('google/callback', [AuthController::class, 'handleGoogleCallback']);
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de API Protegidas (Requieren login)
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Ruta para cerrar sesión
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-    // Ruta para obtener los datos del usuario autenticado.
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+    // Rutas protegidas de autenticación y perfil de usuario
+    Route::prefix('auth')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('user', function (Request $request) {
+            return $request->user();
+        });
     });
 
-    // Rutas de administración de planes (solo para admins)
-    Route::apiResource('plans', PlanController::class)
-        ->except(['index', 'show'])
-        ->middleware('role:admin');
-
+    // Rutas para que el usuario gestione su propio perfil y plan
+    Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/user/plan', [UserPlanController::class, 'update']);
 
-    Route::apiResource('users', UserController::class);
-
-    Route::put('/profile', [ProfileController::class, 'update']);
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Administración (Requieren rol de 'admin')
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:admin')->group(function () {
+        // Rutas de administración de planes (crear, editar, borrar)
+        Route::apiResource('plans', PlanController::class)->except(['index', 'show']);
+        
+        // Rutas de administración de usuarios (CRUD completo)
+        Route::apiResource('users', UserController::class);
+    });
 });
 
