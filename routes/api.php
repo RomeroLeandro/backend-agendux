@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rutas para que el usuario gestione su propio perfil y plan
     Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::put('/user/plan', [UserPlanController::class, 'update']);
 
     /*
