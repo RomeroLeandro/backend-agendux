@@ -24,7 +24,8 @@ class PlanResource extends JsonResource
             ],
             'features' => $this->features,
             'isFeatured' => $this->is_featured,
-            'createdAt' => $this->created_at->toIso8601String(), // Formateamos la fecha
+            'createdAt' => $this->created_at->toIso8601String(), 
+            'extraReminderCost' => $this->extra_reminder_cost,
         ];
     }
 }

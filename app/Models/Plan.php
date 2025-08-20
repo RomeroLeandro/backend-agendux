@@ -20,6 +20,7 @@ class Plan extends Model
         'price_annual',
         'features',
         'is_featured',
+        'extra_reminder_cost',
     ];
 
     protected $casts = [

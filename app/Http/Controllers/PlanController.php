@@ -41,6 +41,7 @@ class PlanController extends Controller
             'features' => 'required|array',
             'features.*' => 'string|max:255',
             'isFeatured' => 'required|boolean',
+            'extraReminderCost' => 'nullable|numeric|min:0',
         ]);
 
         $plan = Plan::create([
@@ -50,6 +51,7 @@ class PlanController extends Controller
             'price_annual' => $validatedData['price']['annual'],
             'features' => $validatedData['features'],
             'is_featured' => $validatedData['isFeatured'],
+            'extra_reminder_cost' => $validatedData['extraReminderCost'] ?? null,
         ]);
         return new PlanResource($plan);
     }
@@ -69,6 +71,8 @@ class PlanController extends Controller
             'features' => 'sometimes|required|array',
             'features.*' => 'string|max:255',
             'isFeatured' => 'sometimes|required|boolean',
+            'extraReminderCost' => 'sometimes|nullable|numeric|min:0',
+            'extra_reminder_cost' => $validatedData['extraReminderCost'] ?? null,
         ]);
 
         $dataToUpdate = [];
@@ -78,6 +82,9 @@ class PlanController extends Controller
         if (isset($validatedData['isFeatured'])) $dataToUpdate['is_featured'] = $validatedData['isFeatured'];
         if (isset($validatedData['price']['monthly'])) $dataToUpdate['price_monthly'] = $validatedData['price']['monthly'];
         if (isset($validatedData['price']['annual'])) $dataToUpdate['price_annual'] = $validatedData['price']['annual'];
+        if (isset($validatedData['extraReminderCost'])) {
+            $dataToUpdate['extra_reminder_cost'] = $validatedData['extraReminderCost'];
+        }
 
         $plan->update($dataToUpdate);
 
