@@ -12,7 +12,11 @@ use App\Http\Controllers\Api\{
 use App\Http\Controllers\ServiceController;
 
 
+
 Route::apiResource('plans', PlanController::class)->only(['index', 'show']);
+
+Route::get('/users/{user}/services', [ServiceController::class, 'index']);
+Route::get('/services/{service}', [ServiceController::class, 'show']);
 
 // Rutas públicas de autenticación
 Route::prefix('auth')->group(function () {
@@ -41,7 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::put('/user/plan', [UserPlanController::class, 'update']);
-    Route::apiResource('services', ServiceController::class);
+    Route::post('/services', [ServiceController::class, 'store']);
+    Route::put('/services/{service}', [ServiceController::class, 'update']);
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
 
     /*
     |--------------------------------------------------------------------------

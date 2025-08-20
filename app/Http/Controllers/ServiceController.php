@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Resources\ServiceResource;
+
 
 class ServiceController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index(Request $request)
+    public function index(User $user)
     {
-        return ServiceResource::collection($request->user()->services()->get());
+        return $user->services;
     }
 
     public function store(Request $request)
@@ -35,8 +37,7 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        $this->authorize('view', $service);
-        return new ServiceResource($service);
+        return $service;
     }
 
     public function update(Request $request, Service $service)
