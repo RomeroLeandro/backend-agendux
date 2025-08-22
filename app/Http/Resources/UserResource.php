@@ -11,11 +11,15 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'role' => $this->role,
-            'plan' => new PlanResource($this->whenLoaded('plan')),
-            'registeredAt' => $this->created_at->toIso8601String(),
+        'firstName' => $this->first_name,
+        'lastName' => $this->last_name,
+        'email' => $this->email,
+        'phone' => $this->phone,
+        'profession' => $this->profession,
+        'businessName' => $this->business_name,
+        'role' => $this->role,
+        'plan' => new PlanResource($this->whenLoaded('plan')),
+        'registeredAt' => $this->created_at->toIso8601String(),
         ];
     }
 }

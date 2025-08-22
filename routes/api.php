@@ -8,12 +8,14 @@ use App\Http\Controllers\Api\{
     UserController,
     ProfileController,
     UserPlanController,
+    ProfessionController
 };
 use App\Http\Controllers\ServiceController;
 
 
 
 Route::apiResource('plans', PlanController::class)->only(['index', 'show']);
+Route::get('/professions', [ProfessionController::class, 'index']);
 
 Route::get('/users/{user}/services', [ServiceController::class, 'index']);
 Route::get('/services/{service}', [ServiceController::class, 'show']);

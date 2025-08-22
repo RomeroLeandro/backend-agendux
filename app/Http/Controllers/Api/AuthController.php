@@ -17,20 +17,26 @@ class AuthController extends Controller
     {
         // Validamos los datos de entrada
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'phone' => 'nullable|string|max:255',
+        'profession' => 'nullable|string|max:255',
+        'business_name' => 'nullable|string|max:255',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        // Creamos el nuevo usuario
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'profession' => $request->profession,
+        'business_name' => $request->business_name,
+        'password' => Hash::make($request->password),
+    ]);
 
-
-        return response()->json($user, 201);
+    return response()->json($user, 201);
     }
 
     /**
