@@ -39,6 +39,8 @@ public function services()
         'business_name',
         'password',
         'role',
+        'is_admin',
+        ´
     ];
 
     protected function fullName(): Attribute
